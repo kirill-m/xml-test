@@ -1,1 +1,1 @@
-Practicing XML in JAVA
+Practicing XML & serialization in JAVA
