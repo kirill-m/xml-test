@@ -26,4 +26,12 @@ public class Page extends Sheet {
     public int hashCode() {
         return number;
     }
+
+    @Override
+    public String toString() {
+        return "Page{" +
+                "number=" + number +
+                ", text=" + getText() +
+                '}';
+    }
 }

@@ -27,4 +27,11 @@ public class Author implements Writable, Serializable{
     public int hashCode() {
         return name.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

@@ -22,16 +22,6 @@ public class BookTest {
         assertTrue(book.equals(result));
     }
 
-    @Test
-    public void testReadBookIsSerialized() throws IOException, ClassNotFoundException {
-        Book book = getBook(100);
-
-        oos.writeObject(book);
-        Book result = (Book) ois.readObject();
-
-        assertTrue(book.equals(result));
-    }
-
     private Book getBook(int pagesNumber) {
         Page[] pages = new Page[pagesNumber];
         for (int i = 0; i < 100; i++) {
