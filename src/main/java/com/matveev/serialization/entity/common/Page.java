@@ -1,4 +1,4 @@
-package com.matveev.serialization.entity.book;
+package com.matveev.serialization.entity.common;
 
 public class Page extends Sheet {
     private final int number;

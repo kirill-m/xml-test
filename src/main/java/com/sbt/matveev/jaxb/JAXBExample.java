@@ -1,7 +1,7 @@
 package com.sbt.matveev.jaxb;
 
-import com.matveev.serialization.entity.book.Author;
-import com.matveev.serialization.entity.book.Page;
+import com.matveev.serialization.entity.common.Author;
+import com.matveev.serialization.entity.common.Page;
 import com.sbt.matveev.jaxb.entity.MutableBook;
 
 import javax.xml.bind.JAXBContext;
@@ -9,7 +9,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Arrays;
 
 public class JAXBExample {

@@ -1,4 +1,6 @@
-package com.matveev.serialization.entity.book;
+package com.matveev.serialization.entity.common;
+
+import com.matveev.serialization.entity.common.book.BookWithUid;
 
 import java.io.*;
 

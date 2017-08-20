@@ -1,4 +1,4 @@
-package com.matveev.serialization.entity.book;
+package com.matveev.serialization.entity.common;
 
 import java.io.Serializable;
 

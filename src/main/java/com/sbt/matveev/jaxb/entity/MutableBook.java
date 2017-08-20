@@ -1,7 +1,7 @@
 package com.sbt.matveev.jaxb.entity;
 
-import com.matveev.serialization.entity.book.Author;
-import com.matveev.serialization.entity.book.Page;
+import com.matveev.serialization.entity.common.Author;
+import com.matveev.serialization.entity.common.Page;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
