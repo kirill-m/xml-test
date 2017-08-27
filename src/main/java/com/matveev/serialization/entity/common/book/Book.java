@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface Book {
     int getPublishingYear();
-    List<Page> getPages();
 }

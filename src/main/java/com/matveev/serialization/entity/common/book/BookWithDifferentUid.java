@@ -26,11 +26,6 @@ public class BookWithDifferentUid implements Book, Serializable {
     }
 
     @Override
-    public List<Page> getPages() {
-        return pages;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

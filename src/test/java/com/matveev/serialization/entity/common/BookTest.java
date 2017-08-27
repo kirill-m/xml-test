@@ -1,77 +1,65 @@
 package com.matveev.serialization.entity.common;
 
 import com.matveev.serialization.classloader.DifferentUidClassLoader;
-import com.matveev.serialization.entity.common.book.Book;
 import com.matveev.serialization.entity.common.book.BookOriginal;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
 
 import java.io.*;
 import java.net.URL;
-import java.net.URLClassLoader;
 
+import static com.matveev.serialization.entity.common.TestData.FILE_NAME;
+import static org.junit.Assert.assertTrue;
+
+@RunWith(SeparateClassloaderTestRunner.class)
 public class BookTest {
-    private ObjectOutputStream oos;
-    private ObjectInputStream ois;
-    private boolean isInit = false;
-
-    private static final String FILE_NAME = "/Users/kirill/IdeaProjects/xml-test/serialized-book/book.txt";
-    private static final String DIFFERENT_UID = "/Users/kirill/IdeaProjects/xml-test/jar/different-uid.jar";
+    private static final BookOriginal bookOriginal = getBook();
+    private static final String BOOK_DIR = TestData.DELETE_FIELD_FILE;
 
     @Test
-    public void testBookSerialization() throws IOException, ClassNotFoundException {
-        BookOriginal bookOriginal = getBook(100);
-
-        oos.writeObject(bookOriginal);
-        BookOriginal result = (BookOriginal) ois.readObject();
+    public void testBookWithNoDifference() throws Exception {
+        BookOriginal result = readBook(FILE_NAME);
 
         assertTrue(bookOriginal.equals(result));
     }
 
-    @Test
+    @Test(expected = InvalidClassException.class)
     public void testBookWithDifferentUid() throws Exception {
-        FileInputStream in = new FileInputStream(new File(FILE_NAME));
-        ois = new ObjectInputStream(in);
+        readBook(BOOK_DIR);
+    }
 
-        DifferentUidClassLoader loader = new DifferentUidClassLoader(new URL[]{new File(DIFFERENT_UID).toURL()},
+    @BeforeClass
+    public static void init() throws IOException {
+        //String file = getClass().getClassLoader().getResource(FILE_NAME).getFile();
+        FileOutputStream out = new FileOutputStream(new File(BOOK_DIR));
+        ObjectOutputStream oos = new ObjectOutputStream(out);
+        oos.writeObject(bookOriginal);
+    }
+
+    private static BookOriginal getBook() {
+        Author author = new Author("Mike");
+        return new BookOriginal(2014, author);
+    }
+
+    private BookOriginal readBook(String fileName) throws IOException, ClassNotFoundException {
+        try (FileInputStream in = new FileInputStream(new File(fileName));
+             ObjectInputStream ois = new ObjectInputStream(in)) {
+            BookOriginal bookOriginal = (BookOriginal) ois.readObject();
+            ois.close();
+            in.close();
+
+            return bookOriginal;
+        }
+    }
+
+    public void testBookUid() throws Exception {
+        ClassLoader loader = new DifferentUidClassLoader(new URL[]{new File(BOOK_DIR).toURL()},
                 Thread.currentThread().getContextClassLoader());
         Class<?> clazz = loader.loadClass("com.matveev.serialization.entity.common.book.BookOriginal");
         BookOriginal book = (BookOriginal) clazz.newInstance();
+        FileInputStream in = new FileInputStream(new File(BOOK_DIR));
+        ObjectInputStream ois = new ObjectInputStream(in);
         book = (BookOriginal) ois.readObject();
-    }
-
-
-    private BookOriginal getBook(int pagesNumber) {
-        Page[] pages = new Page[pagesNumber];
-        for (int i = 0; i < 100; i++) {
-            pages[i] = new Page("Text on " + i + " page", i + 1);
-        }
-
-        Author author = new Author("Steven");
-
-        return new BookOriginal(2017, author, pages);
-    }
-
-    //@Before
-    public void init() throws IOException {
-        if (!isInit) {
-            //String file = getClass().getClassLoader().getResource(FILE_NAME).getFile();
-            FileOutputStream out = new FileOutputStream(new File(FILE_NAME));
-            oos = new ObjectOutputStream(out);
-
-            FileInputStream in = new FileInputStream(new File(FILE_NAME));
-            ois = new ObjectInputStream(in);
-
-            isInit = true;
-        }
-    }
-
-    @After
-    public void after() throws IOException {
-        //oos.flush();
-        //oos.close();
-        ois.close();
     }
 }

@@ -11,26 +11,22 @@ import java.util.List;
 public class BookOriginal implements Book, Serializable {
     private static final long serialVersionUID = -9151124920686776900L;
 
-    private int publishingYear;
-    private Author author;
-    private List<Page> pages = new ArrayList<>();
+    private final int publishingYear;
+    private final Author author;
 
-    public BookOriginal(int publishingYear, Author author, Page... pages) {
+    public BookOriginal(int publishingYear, Author author) {
         this.publishingYear = publishingYear;
         this.author = author;
-        this.pages.addAll(Arrays.asList(pages));
     }
-
-    public BookOriginal() {}
 
     @Override
     public int getPublishingYear() {
         return publishingYear;
     }
 
-    @Override
-    public List<Page> getPages() {
-        return pages;
+
+    public Author getAuthor() {
+        return author;
     }
 
     @Override
@@ -38,18 +34,17 @@ public class BookOriginal implements Book, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BookOriginal bookOriginal = (BookOriginal) o;
+        BookOriginal that = (BookOriginal) o;
 
-        if (publishingYear != bookOriginal.publishingYear) return false;
-        if (!author.equals(bookOriginal.author)) return false;
-        return pages.equals(bookOriginal.pages);
+        if (publishingYear != that.publishingYear) return false;
+        return author != null ? author.equals(that.author) : that.author == null;
+
     }
 
     @Override
     public int hashCode() {
         int result = publishingYear;
-        result = 31 * result + author.hashCode();
-        result = 31 * result + pages.hashCode();
+        result = 31 * result + (author != null ? author.hashCode() : 0);
         return result;
     }
 }
