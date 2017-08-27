@@ -1,12 +1,8 @@
 package com.matveev.serialization.entity.common.book;
 
 import com.matveev.serialization.entity.common.Author;
-import com.matveev.serialization.entity.common.Page;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class BookOriginal implements Book, Serializable {
     private static final long serialVersionUID = -9151124920686776900L;
@@ -21,7 +17,7 @@ public class BookOriginal implements Book, Serializable {
 
     @Override
     public int getPublishingYear() {
-        return publishingYear;
+        return (int) publishingYear;
     }
 
 

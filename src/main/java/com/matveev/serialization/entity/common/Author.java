@@ -2,7 +2,7 @@ package com.matveev.serialization.entity.common;
 
 import java.io.Serializable;
 
-public class Author implements Writable, Serializable{
+public class Author implements Writable, Serializable {
     private final String name;
 
     public Author(String name) {

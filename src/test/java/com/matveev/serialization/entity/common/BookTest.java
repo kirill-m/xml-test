@@ -2,20 +2,19 @@ package com.matveev.serialization.entity.common;
 
 import com.matveev.serialization.classloader.DifferentUidClassLoader;
 import com.matveev.serialization.entity.common.book.BookOriginal;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.*;
 import java.net.URL;
 
-import static com.matveev.serialization.entity.common.TestData.FILE_NAME;
-import static org.junit.Assert.assertTrue;
+import static com.matveev.serialization.entity.common.TestData.*;
+import static org.junit.Assert.*;
 
 @RunWith(SeparateClassloaderTestRunner.class)
 public class BookTest {
     private static final BookOriginal bookOriginal = getBook();
-    private static final String BOOK_DIR = TestData.DELETE_FIELD_FILE;
+    private static final String BOOK_DIR = TestData.YEAR_TYPE_LONG_FILE;
 
     @Test
     public void testBookWithNoDifference() throws Exception {
@@ -26,12 +25,39 @@ public class BookTest {
 
     @Test(expected = InvalidClassException.class)
     public void testBookWithDifferentUid() throws Exception {
-        readBook(BOOK_DIR);
+        readBook(DIFFERENT_UID_FILE);
     }
 
-    @BeforeClass
+    @Test
+    public void testBookWithDeletedField() throws Exception {
+        BookOriginal result = readBook(DELETE_FIELD_FILE);
+
+        assertNull(result.getAuthor());
+        assertNotEquals(bookOriginal, result);
+    }
+
+    @Test
+    public void testAuthorExtendsPerson() throws Exception {
+        BookOriginal result = readBook(AUTHOR_EXTENDS_PERSON_FILE);
+
+        assertNotNull(result.getAuthor());
+        assertEquals(bookOriginal, result);
+    }
+
+    @Test
+    public void testBookExtendsDocument() throws Exception {
+        BookOriginal result = readBook(EXTEND_DOCUMENT_FILE);
+
+        assertEquals(bookOriginal, result);
+    }
+
+    @Test(expected = InvalidClassException.class)
+    public void testYearLongTypeDocument() throws Exception {
+        readBook(YEAR_TYPE_LONG_FILE);
+    }
+
+    //@BeforeClass
     public static void init() throws IOException {
-        //String file = getClass().getClassLoader().getResource(FILE_NAME).getFile();
         FileOutputStream out = new FileOutputStream(new File(BOOK_DIR));
         ObjectOutputStream oos = new ObjectOutputStream(out);
         oos.writeObject(bookOriginal);
