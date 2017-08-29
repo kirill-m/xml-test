@@ -17,7 +17,7 @@ public class BookOriginal implements Book, Serializable {
 
     @Override
     public int getPublishingYear() {
-        return (int) publishingYear;
+        return publishingYear;
     }
 
 
